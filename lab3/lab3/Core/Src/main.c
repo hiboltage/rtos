@@ -328,10 +328,32 @@ void StartTask2(void const * argument)
 {
   /* USER CODE BEGIN StartTask2 */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  for(;;) {
+	  //osMutexWait(myMutex01Handle, osWaitForever);
+	  for (int i=0; i<write_size-2; i++){
+		  buffer[i] = '2';
+	  }
+	  /* register version of HAL_UART_Transmit(&huart2, buffer, write_size, 1000); */
+	  int j = 0;
+	  while (j<write_size) {
+		  //check that a Tx process is not already ongoing
+		  if (uart_ptr -> gState == HAL_UART_STATE_READY) {
+			  uart_ptr -> ErrorCode = HAL_UART_ERROR_NONE;	//set no error
+			  uart_ptr -> gState = HAL_UART_STATE_BUSY_TX;	//set Tx to busy
+			  //send one byte
+			  uart_ptr -> TxXferSize = 1;
+			  uart_ptr -> TxXferCount = 1;
+			  //transmit is 9 bits (data + stop bit), put in 16 bit and send
+			  uart_ptr -> Instance -> TDR = (uint16_t)(buffer[j]);
+
+			  osDelay(2);
+			  uart_ptr -> gState = HAL_UART_STATE_READY;	//return to ready
+			  j++;
+		  }
+	  }
   }
+  //osMutexRelease(myMutex01Handle);
+  osDelay(100);
   /* USER CODE END StartTask2 */
 }
 
@@ -346,10 +368,32 @@ void StartTask3(void const * argument)
 {
   /* USER CODE BEGIN StartTask3 */
   /* Infinite loop */
-  for(;;)
-  {
-    osDelay(1);
+  for(;;) {
+	  //osMutexWait(myMutex01Handle, osWaitForever);
+	  for (int i=0; i<write_size-2; i++){
+		  buffer[i] = '3';
+	  }
+	  /* register version of HAL_UART_Transmit(&huart2, buffer, write_size, 1000); */
+	  int j = 0;
+	  while (j<write_size) {
+		  //check that a Tx process is not already ongoing
+		  if (uart_ptr -> gState == HAL_UART_STATE_READY) {
+			  uart_ptr -> ErrorCode = HAL_UART_ERROR_NONE;	//set no error
+			  uart_ptr -> gState = HAL_UART_STATE_BUSY_TX;	//set Tx to busy
+			  //send one byte
+			  uart_ptr -> TxXferSize = 1;
+			  uart_ptr -> TxXferCount = 1;
+			  //transmit is 9 bits (data + stop bit), put in 16 bit and send
+			  uart_ptr -> Instance -> TDR = (uint16_t)(buffer[j]);
+
+			  osDelay(2);
+			  uart_ptr -> gState = HAL_UART_STATE_READY;	//return to ready
+			  j++;
+		  }
+	  }
   }
+  //osMutexRelease(myMutex01Handle);
+  osDelay(200);
   /* USER CODE END StartTask3 */
 }
 
