@@ -76,18 +76,27 @@ void MX_GPIO_Init(void)
 /* USER CODE BEGIN 2 */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
+
+	static int count = 0;	// count maintains its value across function calls
+
 	if(GPIO_Pin == B1_Pin)	// B1_Pin interrupt mask
 	{
-		static bool prev_val;	// prev_val maintains its value across function calls
-		if(prev_val == false)	// task wakeup toggle
+
+		if(count == 0)	// task wakeup toggle
 		{
-			osSignalSet(Task01Handle, 0x01);
-			prev_val = true;
+			osSignalSet(Task01Handle, 0x10);
+			count++;
+		}
+		else if(count == 1)
+		{
+			osSignalSet(Task01Handle, 0x10);
+			osSignalSet(Task02Handle, 0x20);
+			count++;
 		}
 		else
 		{
-			osSignalSet(Task02Handle, 0x20);
-			prev_val = false;
+			osSignalSet(Task03Handle, 0x30);
+			count = 0;
 		}
 	}
 }

@@ -22,11 +22,11 @@
 #include "task.h"
 #include "main.h"
 #include "cmsis_os.h"
-#include "stdbool.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "tasknames.h"
+#include <stdbool.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -134,21 +134,19 @@ void MX_FREERTOS_Init(void) {
 void StartTask01(void const * argument)
 {
   /* USER CODE BEGIN StartTask01 */
-static bool prev_val_ld2;	// prev_val_ld2 maintains its value across function calls
   /* Infinite loop */
   for(;;)
   {
-		if(prev_val_ld2 == false)	// LED toggle
-		{
-			HAL_GPIO_WritePin(GPIOA, LD2_Pin, SET);
-			prev_val_ld2 = true;
-		}
-		else
-		{
-			HAL_GPIO_WritePin(GPIOA, LD2_Pin, RESET);
-			prev_val_ld2 = false;
-		}
+	  osSignalWait(0x10, osWaitForever);	// wait for wakeup signal from pushbutton
 
+	  for (int i = 0; i < 10; i++) {	// flash LED 10 times
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 1);	// pin D13 high for 250ms
+	    vTaskDelay(250);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, 0);	// pin D13 low for 500ms
+	    vTaskDelay(500);
+	  }
+
+		osDelay(1);
   }
   /* USER CODE END StartTask01 */
 }
@@ -163,23 +161,21 @@ static bool prev_val_ld2;	// prev_val_ld2 maintains its value across function ca
 void StartTask02(void const * argument)
 {
   /* USER CODE BEGIN StartTask02 */
-  static bool prev_val_ld3;	// prev_val_ld3 maintains its value across function calls
   /* Infinite loop */
   for(;;)
   {
-	  osSignalWait(0x01, osWaitForever);	// wait for wakeup signal from pushbutton
+	  osSignalWait(0x20, osWaitForever);	// wait for wakeup signal from pushbutton
 
-		if(prev_val_ld3 == false)	// LED toggle
-		{
-			HAL_GPIO_WritePin(GPIOA, LD3_Pin, SET);
-			prev_val_ld3 = true;
-		}
-		else
-		{
-			HAL_GPIO_WritePin(GPIOA, LD3_Pin, RESET);
-			prev_val_ld3 = false;
-		}
+	  for (int i = 0; i < 10; i++) {	// flash LED 10 times
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, 0);	// pin D8 low for 250ms
+	    vTaskDelay(250);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, 1);	// pin D8 high for 250ms
+	    vTaskDelay(250);
+		HAL_GPIO_WritePin(GPIOA, GPIO_PIN_9, 0);	// pin D8 low for 250ms
+	    vTaskDelay(250);
+	  }
 
+		osDelay(1);
   }
   /* USER CODE END StartTask02 */
 }
@@ -194,23 +190,14 @@ void StartTask02(void const * argument)
 void StartTask03(void const * argument)
 {
   /* USER CODE BEGIN StartTask03 */
-  static bool prev_val_ld4;	// prev_val_ld4 maintains its value across function calls
   /* Infinite loop */
   for(;;)
   {
-	  osSignalWait(0x20, osWaitForever);	// wait for wakeup signal from pushbutton
+	  osSignalWait(0x30, osWaitForever);	// wait for wakeup signal from pushbutton
 
-		if(prev_val_ld4 == false)	// LED toggle
-		{
-			HAL_GPIO_WritePin(GPIOA, LD4_Pin, SET);
-			prev_val_ld4 = true;
-		}
-		else
-		{
-			HAL_GPIO_WritePin(GPIOA, LD4_Pin, RESET);
-			prev_val_ld4 = false;
-		}
+	  HAL_GPIO_TogglePin(GPIOA, LD4_Pin);	// pin D7 toggle
 
+	  osDelay(1);
   }
   /* USER CODE END StartTask03 */
 }
