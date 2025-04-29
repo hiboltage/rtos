@@ -43,9 +43,9 @@
 /* Private variables ---------------------------------------------------------*/
 UART_HandleTypeDef huart2;
 
-osThreadId Task01Handle;
-osThreadId Task02Handle;
-osThreadId Task03Handle;
+osThreadId Task1Handle;
+osThreadId Task2Handle;
+osThreadId Task3Handle;
 osMutexId myMutex01Handle;
 /* USER CODE BEGIN PV */
 uint8_t buffer[100];			//create buffer
@@ -57,9 +57,9 @@ UART_HandleTypeDef * uart_ptr;	//create pointer
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_USART2_UART_Init(void);
-void StartTask01(void const * argument);
-void StartTask02(void const * argument);
-void StartTask03(void const * argument);
+void StartTask1(void const * argument);
+void StartTask2(void const * argument);
+void StartTask3(void const * argument);
 
 /* USER CODE BEGIN PFP */
 
@@ -128,11 +128,10 @@ int main(void)
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
-  /* definition and creation of Task01 */
-  osThreadDef(Task01, StartTask01, osPriorityNormal, 0, 128);
-  Task01Handle = osThreadCreate(osThread(Task01), NULL);
+  /* definition and creation of Task1 */
+  osThreadDef(Task1, StartTask1, osPriorityNormal, 0, 128);
+  Task1Handle = osThreadCreate(osThread(Task1), NULL);
 
-<<<<<<< HEAD
   /* definition and creation of Task2 */
   osThreadDef(Task2, StartTask2, osPriorityNormal, 0, 128);
   Task2Handle = osThreadCreate(osThread(Task2), NULL);
@@ -140,15 +139,6 @@ int main(void)
   /* definition and creation of Task3 */
   osThreadDef(Task3, StartTask3, osPriorityNormal, 0, 128);
   Task3Handle = osThreadCreate(osThread(Task3), NULL);
-=======
-  /* definition and creation of Task02 */
-  osThreadDef(Task02, StartTask02, osPriorityNormal, 0, 128);
-  Task02Handle = osThreadCreate(osThread(Task02), NULL);
-
-  /* definition and creation of Task03 */
-  osThreadDef(Task03, StartTask03, osPriorityNormal, 0, 128);
-  Task03Handle = osThreadCreate(osThread(Task03), NULL);
->>>>>>> lab3
 
   /* USER CODE BEGIN RTOS_THREADS */
   /* add threads, ... */
@@ -234,7 +224,7 @@ static void MX_USART2_UART_Init(void)
   /* USER CODE END USART2_Init 1 */
   huart2.Instance = USART2;
   huart2.Init.BaudRate = 9600;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.WordLength = UART_WORDLENGTH_9B;
   huart2.Init.StopBits = UART_STOPBITS_1;
   huart2.Init.Parity = UART_PARITY_NONE;
   huart2.Init.Mode = UART_MODE_TX_RX;
@@ -293,14 +283,14 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE END 4 */
 
-/* USER CODE BEGIN Header_StartTask01 */
+/* USER CODE BEGIN Header_StartTask1 */
 /**
-  * @brief  Function implementing the Task01 thread.
+  * @brief  Function implementing the Task1 thread.
   * @param  argument: Not used
   * @retval None
   */
-/* USER CODE END Header_StartTask01 */
-void StartTask01(void const * argument)
+/* USER CODE END Header_StartTask1 */
+void StartTask1(void const * argument)
 {
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
@@ -327,26 +317,22 @@ void StartTask01(void const * argument)
 				  j++;
 			  }
 		  }
-<<<<<<< HEAD
-		  //osMutexRelease(myMutex01Handle);
-=======
 		  osMutexRelease(myMutex01Handle);
->>>>>>> lab3
 		  osDelay(1000);
 	  }
   /* USER CODE END 5 */
 }
 
-/* USER CODE BEGIN Header_StartTask02 */
+/* USER CODE BEGIN Header_StartTask2 */
 /**
-* @brief Function implementing the Task02 thread.
+* @brief Function implementing the Task2 thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_StartTask02 */
-void StartTask02(void const * argument)
+/* USER CODE END Header_StartTask2 */
+void StartTask2(void const * argument)
 {
-  /* USER CODE BEGIN StartTask02 */
+  /* USER CODE BEGIN StartTask2 */
   /* Infinite loop */
 	  for(;;) {
 		  osMutexWait(myMutex01Handle, osWaitForever);
@@ -374,26 +360,19 @@ void StartTask02(void const * argument)
 		  osMutexRelease(myMutex01Handle);
 		  osDelay(100);
 	  }
-<<<<<<< HEAD
-	  osDelay(100);
-	  //osMutexRelease(myMutex01Handle);
-  }
   /* USER CODE END StartTask2 */
-=======
-  /* USER CODE END StartTask02 */
->>>>>>> lab3
 }
 
-/* USER CODE BEGIN Header_StartTask03 */
+/* USER CODE BEGIN Header_StartTask3 */
 /**
-* @brief Function implementing the Task03 thread.
+* @brief Function implementing the Task3 thread.
 * @param argument: Not used
 * @retval None
 */
-/* USER CODE END Header_StartTask03 */
-void StartTask03(void const * argument)
+/* USER CODE END Header_StartTask3 */
+void StartTask3(void const * argument)
 {
-  /* USER CODE BEGIN StartTask03 */
+  /* USER CODE BEGIN StartTask3 */
   /* Infinite loop */
 	  for(;;) {
 		  osMutexWait(myMutex01Handle, osWaitForever);
@@ -421,14 +400,7 @@ void StartTask03(void const * argument)
 		  osMutexRelease(myMutex01Handle);
 		  osDelay(200);
 	  }
-<<<<<<< HEAD
-	  //osMutexRelease(myMutex01Handle);
-	  osDelay(200);
-  }
   /* USER CODE END StartTask3 */
-=======
-  /* USER CODE END StartTask03 */
->>>>>>> lab3
 }
 
 /**
