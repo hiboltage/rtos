@@ -127,11 +127,11 @@ int main(void)
   Task1Handle = osThreadCreate(osThread(Task1), NULL);
 
   /* definition and creation of Task2 */
-  osThreadDef(Task2, StartTask2, osPriorityIdle, 0, 128);
+  osThreadDef(Task2, StartTask2, osPriorityNormal, 0, 128);
   Task2Handle = osThreadCreate(osThread(Task2), NULL);
 
   /* definition and creation of Task3 */
-  osThreadDef(Task3, StartTask3, osPriorityIdle, 0, 128);
+  osThreadDef(Task3, StartTask3, osPriorityNormal, 0, 128);
   Task3Handle = osThreadCreate(osThread(Task3), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -311,9 +311,9 @@ void StartTask1(void const * argument)
 				  j++;
 			  }
 		  }
+		  //osMutexRelease(myMutex01Handle);
+		  osDelay(1000);
 	  }
-	  //osMutexRelease(myMutex01Handle);
-	  osDelay(1000);
   /* USER CODE END 5 */
 }
 
@@ -351,9 +351,9 @@ void StartTask2(void const * argument)
 			  j++;
 		  }
 	  }
+	  osDelay(100);
+	  //osMutexRelease(myMutex01Handle);
   }
-  //osMutexRelease(myMutex01Handle);
-  osDelay(100);
   /* USER CODE END StartTask2 */
 }
 
@@ -391,9 +391,9 @@ void StartTask3(void const * argument)
 			  j++;
 		  }
 	  }
+	  //osMutexRelease(myMutex01Handle);
+	  osDelay(200);
   }
-  //osMutexRelease(myMutex01Handle);
-  osDelay(200);
   /* USER CODE END StartTask3 */
 }
 
