@@ -295,7 +295,7 @@ void StartTask01(void const * argument)
   /* USER CODE BEGIN 5 */
   /* Infinite loop */
 	  for(;;) {
-		  //osMutexWait(myMutex01Handle, osWaitForever);
+		  osMutexWait(myMutex01Handle, osWaitForever);
 		  for (int i=0; i<write_size-2; i++){
 			  buffer[i] = '1';
 		  }
@@ -317,9 +317,9 @@ void StartTask01(void const * argument)
 				  j++;
 			  }
 		  }
+		  osMutexRelease(myMutex01Handle);
+		  osDelay(1000);
 	  }
-	  //osMutexRelease(myMutex01Handle);
-	  osDelay(1000);
   /* USER CODE END 5 */
 }
 
@@ -335,7 +335,7 @@ void StartTask02(void const * argument)
   /* USER CODE BEGIN StartTask02 */
   /* Infinite loop */
 	  for(;;) {
-		  //osMutexWait(myMutex01Handle, osWaitForever);
+		  osMutexWait(myMutex01Handle, osWaitForever);
 		  for (int i=0; i<write_size-2; i++){
 			  buffer[i] = '2';
 		  }
@@ -357,9 +357,9 @@ void StartTask02(void const * argument)
 				  j++;
 			  }
 		  }
+		  osMutexRelease(myMutex01Handle);
+		  osDelay(100);
 	  }
-	  //osMutexRelease(myMutex01Handle);
-	  osDelay(100);
   /* USER CODE END StartTask02 */
 }
 
@@ -375,7 +375,7 @@ void StartTask03(void const * argument)
   /* USER CODE BEGIN StartTask03 */
   /* Infinite loop */
 	  for(;;) {
-		  //osMutexWait(myMutex01Handle, osWaitForever);
+		  osMutexWait(myMutex01Handle, osWaitForever);
 		  for (int i=0; i<write_size-2; i++){
 			  buffer[i] = '3';
 		  }
@@ -397,9 +397,9 @@ void StartTask03(void const * argument)
 				  j++;
 			  }
 		  }
+		  osMutexRelease(myMutex01Handle);
+		  osDelay(200);
 	  }
-	  //osMutexRelease(myMutex01Handle);
-	  osDelay(200);
   /* USER CODE END StartTask03 */
 }
 
